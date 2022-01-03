@@ -5,25 +5,30 @@ title: Simulate P-ball
 
 # I. Introduction and Motivation
 
-$\text{There is a strange result concerning the uniform distribution on the p-ball in high dimension:}$
+
+
+There is a strange result concerning the uniform distribution on the p-ball in high dimension :
 <br>
-Let's have $$ X^{(p)} \sim \mathcal{U}(\mathcal{B_p(1)}) $$
+Let's have 
+<div> $$ X^{(p)} \sim \mathcal{U}(\mathcal{B_p(1)}) $$ </div>
 <br>
-with  $$\mathcal{B_p(r)} = \{ x \in \mathbb{R^p} , \lVert x \rVert  \leq r \} \lVert \rVert \text{ being the standard euclidean distance} $$ 
+with  
+<div>$$ \mathcal{B_p(r)} = \{ x \in \mathbb{R^p} , \lVert x \rVert  \leq r \} \quad \lVert \rVert \text{ being the standard euclidean distance} $$ </div>
 <br>
-Then $$ E(\lVert X^{(p)} \rVert^2) \underset{p \to +\infty}{\overset{}{\longrightarrow}}1$$
+Then 
+<br>
+<div> $$ E(\lVert X^{(p)} \rVert^2) \underset{p \to +\infty}{\overset{}{\longrightarrow}}1$$ </div>
 
 That is to say that in large dimensions, all the draws of a uniform distribution on the unit ball are concentrated on the edge. 
 <br>
 The Mathematical proof is at the end of this Notebook.
 
-I found something interesting while trying to simulate this result. One of the first challenge is to uniformly sampling a p-ball. An elegant method for doing so ($\href{https://arxiv.org/abs/math/0503650}{Barthe,2005}$) is to randomly draw p coordinates $X_1,…,X_p$ i.i.d from a standard normal distribution. Also sample Y from the exponential distribution with parameter $\lambda=1$. Then the desired sample is :
+I found something interesting while trying to simulate this result. One of the first challenge is to uniformly sampling a p-ball. An elegant method for doing so ([Barthe, 2005](https://arxiv.org/abs/math/0503650)) is to randomly draw p coordinates $$X_1,…,X_p$$ i.i.d from a standard normal distribution. Also sample Y from the exponential distribution with parameter $$\lambda=1$$. Then the desired sample is :
 <br>
 <br>
-$$\frac{(X_1,...,X_p)}{\sqrt{Y+\sum_1^{p}X_i^2}}$$
+<div> $$\frac{(X_1,...,X_p)}{\sqrt{Y+\sum_1^{p}X_i^2}}$$ </div>
 
-However, and as mentionned
-$\href{http://extremelearning.com.au/how-to-generate-uniformly-random-points-on-n-spheres-and-n-balls/}{here}$, I found empirical evidence in this notebook that the right parameter for the exponential distribution should be $\lambda = 1/2$
+However, and as mentionned [here](http://extremelearning.com.au/how-to-generate-uniformly-random-points-on-n-spheres-and-n-balls/), I found empirical evidence in this notebook that the right parameter for the exponential distribution should be $$\lambda = 1/2$$.
 
 # II. Code
 
@@ -149,56 +154,49 @@ plt.show()
 
 # Proof
 
-first let's proove that $$V_p(r) = r^pV_p(1)$$
+first let's proove that 
+<div>$$V_p(r) = r^pV_p(1)$$</div>
 <br>
-with $$V_p(r) = \text{Volume}(\mathcal{B_p(r)}) $$
+with 
+<div> $$\begin{align}
+V_p(r) &= \text{Volume}(\mathcal{B_p(r)} \\
+&= \int_{\mathbb{R}^p} \mathbb{1}_{\lVert x \rVert \leq r} \,dx 
+\end{align}$$ </div> 
+<br>
+<br>
 
-$$\begin{align}
-V_p(r) &= \int_{\mathbb{R}^p} \mathbb{1}_{\lVert x \rVert \leq r} \,dx \\
-\end{align}$$
-<br>
-<br>
-
-$\text{let's } g(x) = (rx_1,...,rx_p) \\
+$$\text{let's } g(x) = (rx_1,...,rx_p) \\
 \phi_g(x) = r\mathcal{I}_p \\
-|\det \phi_g(x)| = r^p$
-$$\begin{align}
-V_p(r) &= \int_{\mathbb{R}^p} \mathbb{1}_{|r| \lVert x \rVert \leq r}r^p \,dx \text{ by substitution } \\
+|\det \phi_g(x)| = r^p$$
+<br>
+<div> $$\begin{align}
+V_p(r) &= \int_{\mathbb{R}^p} \mathbb{1}_{|r| \lVert x \rVert \leq r}r^p \,dx \quad \text{ by substitution } \\
 &=r^p \int_{\mathbb{R}^p} \mathbb{1}_{ \lVert x \rVert \leq 1} \,dx \\
 &=r^pV_p(1)
-\end{align}
-$$
+\end{align} $$ </div>
 
-
-$ \text{with } X^{(p)} \sim \mathcal{U}(\mathcal{B_p(1)}) \text{ we have } f_X(x) = \Large\frac{\mathbb{1}_{ \lVert x \rVert \leq 1} }{V_p(1)}$ 
-
-$\text{and } P( \lVert X^{(p)} \rVert \leq r) = 1 \quad (\text{    if } r > 1) $
 <br>
-$\text{ if } r \leq 1 :$
-$$\begin{align}
+<span>$$ \text{with } X^{(p)} \sim \mathcal{U}(\mathcal{B_p(1)}) \text{ we have } f_X(x) = \Large\frac{\mathbb{1}_{ \lVert x \rVert \leq 1} }{V_p(1)}$$ </span>
+
+$$\text{and } P( \lVert X^{(p)} \rVert \leq r) = 1 \quad (\text{    if } r > 1) $$
+<br>
+$$\text{ if } r \leq 1 :$$
+
+<div>$$\begin{align}
 P( \lVert X^{(p)} \rVert \leq r) &= \int_{\mathbb{R}^p} \mathbb{1}_{ \lVert x \rVert \leq r} \frac{\mathbb{1}_{ \lVert x \rVert \leq 1} }{V_p(1)} \,dx \\
 &=\frac{1}{V_p(1)} \int_{\mathbb{R}^p} \mathbb{1}_{ \lVert x \rVert \leq r}\,dx \\
 &=r^p
-\end{align}
-$$
+\end{align} $$</div>
 
-$\text{Then we can derive } E(\lVert X^{(p)} \rVert^2)$
+<span> $$\text{Then we can derive } E(\lVert X^{(p)} \rVert^2)$$ </span>
 
-$$\begin{align}
+<div> $$\begin{align}
 E(\lVert X^{(p)} \rVert^2) &= \int_{\mathbb{R}^+} P(\lVert X^{(p)} \rVert^2 > t) \,dt \\
 &=\int_{\mathbb{R}^+} (1 - P(\lVert X^{(p)} \rVert \leq \sqrt{t})) \,dt \\
 &=\int_{0}^1 1 - t^{\frac{p}{2}} \,dt \\
 &= \frac{p}{p+2}
-\end{align}
-$$
+\end{align} $$ </div>
 
-$\text{Hence :}$
+Hence :
 <br>
-$$
-E(\lVert X^{(p)} \rVert^2) \underset{p \to +\infty}{\overset{}{\longrightarrow}}1
-$$
-
-
-```python
-
-```
+<div> $$E(\lVert X^{(p)} \rVert^2) \underset{p \to +\infty}{\overset{}{\longrightarrow}}1 $$ </div>
